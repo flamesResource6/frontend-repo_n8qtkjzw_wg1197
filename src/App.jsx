@@ -34,16 +34,23 @@ export default function App() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white selection:bg-red-200/60 selection:text-gray-900">
       <Navbar />
       <main>
         <Hero onSearch={(q) => { setMarket(q); fetchDeals(q) }} />
 
-        <section className="relative z-10 -mt-16 pb-24">
+        {/* Deals rail */}
+        <section className="relative z-10 -mt-28 pb-10">
           <div className="mx-auto max-w-7xl px-6">
-            <div className="mb-6 flex items-center justify-between">
-              <h2 className="text-xl sm:text-2xl font-semibold text-gray-900">{market ? `Deals in ${market}` : 'Featured Deals'}</h2>
-              <a href="#" className="text-sm text-red-600 hover:text-red-700">Set up alerts →</a>
+            <div className="mb-6 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2">
+              <div>
+                <p className="text-xs uppercase tracking-widest text-red-500/80 font-semibold">Live Deals</p>
+                <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">{market ? `Deals in ${market}` : 'Featured Deals'}</h2>
+              </div>
+              <button className="group inline-flex items-center gap-2 text-sm text-red-600 hover:text-red-700">
+                Set up alerts
+                <span className="translate-x-0 group-hover:translate-x-0.5 transition">→</span>
+              </button>
             </div>
 
             {loading ? (
@@ -55,7 +62,7 @@ export default function App() {
                 ))}
               </div>
             ) : (
-              <div className="rounded-xl border border-dashed p-10 text-center text-gray-600">
+              <div className="rounded-2xl border border-dashed p-10 text-center text-gray-600 bg-white">
                 <p>No deals found yet. Try another market or add a property.</p>
                 <button
                   onClick={() => fetchDeals('')}
@@ -68,29 +75,44 @@ export default function App() {
           </div>
         </section>
 
-        <section id="features" className="py-20 bg-gray-50">
+        {/* Features with wow effect */}
+        <section id="features" className="relative py-24">
+          <div className="absolute inset-0 -z-10 bg-gradient-to-b from-white via-rose-50/60 to-white" />
           <div className="mx-auto max-w-7xl px-6">
-            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 text-center">Built for modern investors</h2>
-            <div className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-6">
-              {[{
-                title: 'Nationwide Coverage',
-                desc: 'Search deals across every US market with consistent data.'
-              },{
-                title: 'Smart Analytics',
-                desc: 'Cap rates, cash-on-cash, and underwriting helpers built-in.'
-              },{
-                title: 'Alerts & Saved Searches',
-                desc: 'Stay on top of your target markets and be first to act.'
-              }].map((f, i) => (
-                <div key={i} className="rounded-2xl border bg-white p-6 shadow-sm">
-                  <h3 className="font-semibold text-gray-900">{f.title}</h3>
-                  <p className="mt-2 text-gray-600 text-sm">{f.desc}</p>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+              <div>
+                <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight">
+                  Powerful analytics, beautiful by default
+                </h2>
+                <p className="mt-3 text-gray-700">
+                  Underwrite in seconds with cap rate, DSCR, and CoC engines. Save markets and get alerted instantly when new deals hit.
+                </p>
+                <ul className="mt-6 space-y-3 text-gray-800">
+                  {[
+                    'Nationwide inventory with consistent data',
+                    'Market heatmaps and comp layers',
+                    'Saved searches with instant email alerts',
+                    'Exportable pro formas and sharing links',
+                  ].map((t) => (
+                    <li key={t} className="flex items-start gap-3"><span className="mt-1 h-2 w-2 rounded-full bg-red-500" />{t}</li>
+                  ))}
+                </ul>
+              </div>
+              <div className="relative">
+                <div className="absolute -inset-4 -z-10 rounded-3xl bg-gradient-to-tr from-red-200 via-white to-red-100 blur-2xl opacity-70" />
+                <div className="rounded-3xl border bg-white p-4 shadow-xl">
+                  <div className="grid grid-cols-3 gap-3">
+                    {Array.from({ length: 9 }).map((_, i) => (
+                      <div key={i} className="aspect-square rounded-2xl bg-gradient-to-br from-gray-50 to-white border" />
+                    ))}
+                  </div>
                 </div>
-              ))}
+              </div>
             </div>
           </div>
         </section>
 
+        {/* Contact */}
         <section id="contact" className="py-20">
           <div className="mx-auto max-w-2xl px-6 text-center">
             <h2 className="text-2xl sm:text-3xl font-semibold text-gray-900">Get early access</h2>
@@ -152,7 +174,7 @@ function LeadForm() {
         disabled={status==='loading'}
         className="mt-2 inline-flex items-center justify-center rounded-lg bg-red-500 px-4 py-2 font-semibold text-white hover:bg-red-600 disabled:opacity-60"
       >
-        {status === 'loading' ? 'Sending…' : status === 'success' ? 'Thanks! Well be in touch.' : 'Request access'}
+        {status === 'loading' ? 'Sending…' : status === 'success' ? 'Thanks! We\'ll be in touch.' : 'Request access'}
       </button>
       {status === 'error' && <p className="text-sm text-red-600">Something went wrong. Please try again.</p>}
     </form>
